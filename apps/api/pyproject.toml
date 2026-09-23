@@ -1,0 +1,37 @@
+[project]
+name = "fluxrun-api"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "alembic==1.17.2",
+  "argon2-cffi==25.1.0",
+  "fastapi==0.141.1",
+  "email-validator==2.3.0",
+  "psycopg[binary]==3.2.12",
+  "pydantic==2.12.5",
+  "pydantic-settings==2.12.0",
+  "redis==6.4.0",
+  "sqlalchemy==2.0.54",
+  "structlog==25.4.0",
+  "uvicorn[standard]==0.53.0",
+  "boto3==1.40.61",
+  "celery[redis]==5.6.3",
+  "httpx==0.28.1",
+  "jsonschema==4.26.0",
+  "cryptography==46.0.3",
+  "prometheus-client==0.23.1",
+  "python-multipart==0.0.22",
+]
+
+[build-system]
+requires = ["setuptools>=80"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["fluxrun_api*", "fluxrun_worker*"]
+
+[project.optional-dependencies]
+dev = ["httpx==0.28.1", "pytest==8.4.2", "pytest-cov==7.0.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
