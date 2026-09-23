@@ -1,5 +1,6 @@
 from functools import lru_cache
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import model_validator
 
 
 class Settings(BaseSettings):
@@ -22,6 +23,12 @@ class Settings(BaseSettings):
     encryption_key: str = ""
     signup_enabled: bool = True
     metrics_enabled: bool = True
+
+    @model_validator(mode="after")
+    def enforce_production_cookie_security(self):
+        if self.environment.lower() == "production" and not self.session_cookie_secure:
+            raise ValueError("session_cookie_secure must be true in production")
+        return self
 
     @property
     def cors_origin_list(self) -> list[str]:
