@@ -28,3 +28,20 @@ Validated locally: API unit tests, web typecheck/build, tracking integration, ad
 - The compose setup is development-only. `SESSION_COOKIE_SECURE=true` is required behind HTTPS in production.
 
 See `docs/plans/milestone-0-1.md` and `docs/decisions/0001-session-auth.md` for the implementation contract.
+
+## Recommended local checks
+
+Before opening a pull request or pushing a release candidate, run:
+
+```bash
+make test
+make lint
+```
+
+For container-level validation, use:
+
+```bash
+docker compose up --build
+```
+
+Keep `.env`, generated databases, logs, caches, and build artefacts untracked.
