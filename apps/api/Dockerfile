@@ -8,4 +8,7 @@ COPY alembic ./alembic
 COPY fluxrun_api ./fluxrun_api
 COPY fluxrun_worker ./fluxrun_worker
 RUN pip install .
+RUN groupadd --system fluxrun && useradd --system --gid fluxrun --home-dir /app fluxrun \
+    && chown -R fluxrun:fluxrun /app
+USER fluxrun
 EXPOSE 8000
