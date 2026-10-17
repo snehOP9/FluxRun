@@ -55,6 +55,12 @@ services:
       S3_ACCESS_KEY: ${MINIO_ROOT_USER}
       S3_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
     command: sh -c "alembic upgrade head && python -m fluxrun_api.bootstrap && uvicorn fluxrun_api.main:app --host 0.0.0.0 --port 8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import http.client; c=http.client.HTTPConnection('localhost', 8000, timeout=2); c.request('GET', '/healthz'); r=c.getresponse(); assert r.status == 200; r.read()"]
+      interval: 10s
+      timeout: 3s
+      retries: 12
+      start_period: 60s
     ports:
       - "127.0.0.1:8000:8000"
     depends_on:
@@ -88,7 +94,8 @@ services:
     environment:
       VITE_API_BASE_URL: http://localhost:8000
     depends_on:
-      - api
+      api:
+        condition: service_healthy
 
 volumes:
   postgres_data:
