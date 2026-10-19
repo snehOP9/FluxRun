@@ -1,6 +1,9 @@
 """Guard the Docker Compose startup dependency contract."""
 
+import os
 from pathlib import Path
+
+os.environ.setdefault('ENVIRONMENT', 'test')
 
 from fastapi.testclient import TestClient
 from fluxrun_api.main import app
