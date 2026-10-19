@@ -42,7 +42,7 @@ def create_session(db: Session, user: User) -> str:
 
 def set_session_cookie(response, raw_token: str) -> None:
     settings = get_settings()
-    response.set_cookie(SESSION_COOKIE, raw_token, httponly=True, secure=settings.session_cookie_secure, samesite="lax", max_age=settings.session_ttl_hours * 3600, path="/")
+    response.set_cookie(SESSION_COOKIE, raw_token, httponly=True, secure=settings.session_cookie_secure or settings.environment.lower() in {"production", "prod"}, samesite="lax", max_age=settings.session_ttl_hours * 3600, path="/")
 
 
 def require_same_origin(request: Request) -> None:
